@@ -1,0 +1,97 @@
+body {
+    margin: 0;
+}
+.calculator {
+    height: 60vh;
+    padding: 0;
+    background-color: #333D44;
+    margin-top: 10vh;
+    margin-left: 37.5%;
+}
+.innerCalculator {
+    height: 100%;
+    width: 100%;
+    padding: 2.5%;
+}
+.screen {
+    background-color: black;
+    height: 20%;
+    padding: 5%;
+    box-sizing: border-box;
+    border: 13px solid #333D44;
+}
+.keysContainer {
+    height: 80%;
+    padding: 0;
+}
+.leftHand {
+    background-color: #333D44;
+    height: 100%;
+    padding: 2.5%;
+}
+.rightHand {
+    background-color: #333D44;
+    height: 100%;
+    padding: 3%;
+}
+#divide, #multiply, #sub {
+    height: 17.6%;
+    margin-bottom: 14.5%;
+    background-color: #75002C;
+    padding: 0;
+}
+#add {
+    height: 39%;
+    background-color: #75002C;
+    padding: 0;
+}
+.row {
+    height: 18.2%;
+    margin-left: 0%;
+    margin-bottom: 3%;
+    padding-right: 4%;
+}
+.rightHand button, .leftHand button {
+    box-sizing: border-box;
+    border: 3px solid #333D44;
+    font-size: 4rem;
+    line-height: 100%;
+    border: #333D44 3px solid;
+    font-size: 3.5rem;
+    font-weight: bold;
+}
+.rightHand button {
+    color: white;
+}
+.whiteBtn {
+    height: 100%;
+    padding: 0;
+}
+.clearBtn {
+    background-color: #1E5A7E;
+    height: 100%;
+    color: white;
+    border: #333D44 3px solid;
+    font-size: 4rem;
+    font-weight: bold;
+}
+
+@media (max-width: 1200px) {
+    .calculator {
+        margin-left: 33.33%;
+    }
+}
+
+
+@media (max-width: 991px) {
+    .calculator {
+        margin-left: 29.16%;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .calculator {
+        margin-left: 25%;
+    }
+}
