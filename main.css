@@ -19,6 +19,17 @@ body {
     padding: 5%;
     box-sizing: border-box;
     border: 13px solid #333D44;
+    position: relative;
+}
+.screenText {
+    font-size: 4rem;
+    color: white;
+    text-align: right;
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+
 }
 .keysContainer {
     height: 80%;
@@ -75,21 +86,16 @@ body {
     font-size: 4rem;
     font-weight: bold;
 }
-
 @media (max-width: 1200px) {
     .calculator {
         margin-left: 33.33%;
     }
 }
-
-
 @media (max-width: 991px) {
     .calculator {
         margin-left: 29.16%;
     }
 }
-
-
 @media (max-width: 768px) {
     .calculator {
         margin-left: 25%;
