@@ -121,17 +121,27 @@ const stateObj = {
         this.current = String(value);
     },
     updateDisplay: function(value){
-        value = Number(value);
-        if (value > 99999999999 || value < -99999999999){
-            $('.screenText').text(expo(value, 3));
-        } else if (isNaN(value)){
-            $('.screenText').text('How could you?');
+        if (isNaN(Number(value))){
+            $('.screenText').text('How dare you?');
             setTimeout(function(){
                 stateObj.reset();
             }, 1000);
+        } else if (String(Number(value)).length > 12){
+            $('.screenText').text(expo(Number(value), 3));
         } else {
             $('.screenText').text(Number(value));
         }
+        // value = Number(value);
+        // if (value > 99999999999 || value < -99999999999){
+        //     $('.screenText').text(expo(value, 3));
+        // } else if (isNaN(value)){
+        //     $('.screenText').text('How could you?');
+        //     setTimeout(function(){
+        //         stateObj.reset();
+        //     }, 1000);
+        // } else {
+        //     $('.screenText').text(Number(value));
+        // }
     },
     reset: function(){
         this.current = '0';
