@@ -22,11 +22,12 @@ function handleClick() {
 }
 
 const stateObj = {
-    current: '0',
-    operator: null,
-    operand: '0',
-    history: [0],
-    state: 'num',
+    current: '0',   // current is used for the first number and accumulating calculated results
+    operator: null, // self explanatory
+    operand: '0',   // operand is the second number
+    history: [0],   // history is used to roll back operations using CE button
+    state: 'num',   // possible states are num, operator, operand, eval
+    // digit inputs and period run this function.
     digit: function(input){
         switch(this.state){
             case 'num':
@@ -53,6 +54,7 @@ const stateObj = {
                 break;
         }
     },
+    // operators run this function
     operation: function (input) {
         switch(this.state){
             case 'num':
@@ -75,6 +77,7 @@ const stateObj = {
                 break;
         }
     },
+    // when = is pressed, it runs this function
     eval: function() {
         switch(this.state){
             case 'num':
@@ -95,6 +98,7 @@ const stateObj = {
         }
         this.updateDisplay(this.current);
     },
+    // the actual function for doing math. It also pushes the result into the history
     doMath: function(op1, operator, op2) {
         let value;
         op1 = Number(op1);
@@ -120,6 +124,7 @@ const stateObj = {
         this.history.push(value);
         this.current = String(value);
     },
+    // display should be updated in certain states. The function also handles number length overflows
     updateDisplay: function(value){
         if (isNaN(Number(value))){
             $('.screenText').text('How dare you?');
@@ -131,18 +136,8 @@ const stateObj = {
         } else {
             $('.screenText').text(Number(value));
         }
-        // value = Number(value);
-        // if (value > 99999999999 || value < -99999999999){
-        //     $('.screenText').text(expo(value, 3));
-        // } else if (isNaN(value)){
-        //     $('.screenText').text('How could you?');
-        //     setTimeout(function(){
-        //         stateObj.reset();
-        //     }, 1000);
-        // } else {
-        //     $('.screenText').text(Number(value));
-        // }
     },
+    // pressing C runs this function
     reset: function(){
         this.current = '0';
         this.operator = null;
@@ -151,6 +146,7 @@ const stateObj = {
         this.state = 'num';
         this.updateDisplay('0');
     },
+    // CE runs this function
     clearEntry: function(){
         if (this.history.length > 1){
             this.history.pop();
@@ -161,10 +157,12 @@ const stateObj = {
     }
 };
 
+// for converting longer numbers into a exponential form
 function expo(x, f) {
     return Number.parseFloat(x).toExponential(f);
 }
 
+// self explanatory
 function initializeKeyPress(){
     document.onkeydown = function(evt) {
         if (evt.keyCode === 13 || evt.keyCode === 187){ //enter and equals
