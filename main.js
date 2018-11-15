@@ -30,11 +30,10 @@ const stateObj = {
     digit: function(input){
         switch(this.state){
             case 'num':
-                if(input === '.' && this.current[this.current.length-1] === '.'){
-                    break;
+                if(!(input === '.' && (this.current.indexOf('.') !== -1))){
+                    this.current = this.current + String(input);
+                    this.updateDisplay(this.current);
                 }
-                this.current = this.current + String(input);
-                this.updateDisplay(this.current);
                 break;
             case 'operator':
                 this.state = 'operand';
@@ -43,17 +42,16 @@ const stateObj = {
                 this.updateDisplay(this.operand);
                 break;
             case 'operand':
-                if(input === '.' && this.operand[this.operand.length-1] === '.'){
-                    break;
+                if(!(input === '.' && (this.operand.indexOf('.') !== -1))){
+                    this.operand = this.operand + String(input);
+                    this.updateDisplay(this.operand);
                 }
-                this.operand = this.operand + String(input);
-                this.updateDisplay(this.operand);
+                break;
             case 'eval':
-                stateObj.reset();
-                stateObj.digit(input);
+                this.reset();
+                this.digit(input);
                 break;
         }
-        
     },
     operation: function (input) {
         switch(this.state){
@@ -80,6 +78,9 @@ const stateObj = {
     eval: function() {
         switch(this.state){
             case 'num':
+                this.state = 'eval';
+                this.operator = '+';
+                this.doMath(this.current, this.operator, this.operand);
                 break;
             case 'operator':
                 this.doMath(this.current, this.operator, this.current);
@@ -107,9 +108,10 @@ const stateObj = {
                 break;
             case '÷':
                 if (op2 === 0){
-                    console.log('div by 0 error');
+                    value = 'error';
+                } else {
+                    value = op1 / op2;
                 }
-                value = op1 / op2;
                 break;
             case '×':
                 value = op1 * op2;
@@ -119,7 +121,17 @@ const stateObj = {
         this.current = String(value);
     },
     updateDisplay: function(value){
-        $('.screenText').text(Number(value));
+        value = Number(value);
+        if (value > 99999999999 || value < -99999999999){
+            $('.screenText').text(expo(value, 3));
+        } else if (isNaN(value)){
+            $('.screenText').text('How could you?');
+            setTimeout(function(){
+                stateObj.reset();
+            }, 1000);
+        } else {
+            $('.screenText').text(Number(value));
+        }
     },
     reset: function(){
         this.current = '0';
@@ -139,9 +151,13 @@ const stateObj = {
     }
 };
 
+function expo(x, f) {
+    return Number.parseFloat(x).toExponential(f);
+}
+
 function initializeKeyPress(){
     document.onkeydown = function(evt) {
-        if (evt.keyCode === 13 || evt.keyCode === 187){ //enter/equals
+        if (evt.keyCode === 13 || evt.keyCode === 187){ //enter and equals
             stateObj.eval();
         } else if (evt.keyCode === 48 || evt.keyCode === 96){ //0
             stateObj.digit(0);
@@ -173,9 +189,8 @@ function initializeKeyPress(){
             stateObj.operation('÷');
         } else if (evt.keyCode === 110 || evt.keyCode === 190){ //decimal
             stateObj.digit('.');
-        } else if (evt.keyCode === 27){
+        } else if (evt.keyCode === 27){ //esc
             stateObj.reset();
         }
-
     };
 }
