@@ -127,12 +127,12 @@ const stateObj = {
     // display should be updated in certain states. The function also handles number length overflows
     updateDisplay: function(value){
         if (isNaN(Number(value))){
-            $('.screenText').text('How dare you?');
+            $('.screenText').text('error');
             setTimeout(function(){
                 stateObj.reset();
             }, 1000);
         } else if (String(Number(value)).length > 12){
-            $('.screenText').text(expo(Number(value), 3));
+            $('.screenText').text(exponential(Number(value), 2));
         } else {
             $('.screenText').text(Number(value));
         }
@@ -158,46 +158,46 @@ const stateObj = {
 };
 
 // for converting longer numbers into a exponential form
-function expo(x, f) {
-    return Number.parseFloat(x).toExponential(f);
+function exponential(num, prec) {
+    return Number.parseFloat(num).toExponential(prec);
 }
 
 // self explanatory
 function initializeKeyPress(){
     document.onkeydown = function(evt) {
-        if (evt.keyCode === 13 || evt.keyCode === 187){ //enter and equals
+        if (evt.which === 13 || evt.which === 187){ //enter and equals
             stateObj.eval();
-        } else if (evt.keyCode === 48 || evt.keyCode === 96){ //0
+        } else if (evt.which === 48 || evt.which === 96){ //0
             stateObj.digit(0);
-        } else if (evt.keyCode === 49 || evt.keyCode === 97){ //1
+        } else if (evt.which === 49 || evt.which === 97){ //1
             stateObj.digit(1);
-        } else if (evt.keyCode === 50 || evt.keyCode === 98){ //2
+        } else if (evt.which === 50 || evt.which === 98){ //2
             stateObj.digit(2);
-        } else if (evt.keyCode === 51 || evt.keyCode === 99){ //3
+        } else if (evt.which === 51 || evt.which === 99){ //3
             stateObj.digit(3);
-        } else if (evt.keyCode === 52 || evt.keyCode === 100){ //4
+        } else if (evt.which === 52 || evt.which === 100){ //4
             stateObj.digit(4);
-        } else if (evt.keyCode === 53 || evt.keyCode === 101){ //5
+        } else if (evt.which === 53 || evt.which === 101){ //5
             stateObj.digit(5);
-        } else if (evt.keyCode === 54 || evt.keyCode === 102){ //6
+        } else if (evt.which === 54 || evt.which === 102){ //6
             stateObj.digit(6);
-        } else if (evt.keyCode === 55 || evt.keyCode === 103){ //7
+        } else if (evt.which === 55 || evt.which === 103){ //7
             stateObj.digit(7);
-        } else if (evt.keyCode === 56 || evt.keyCode === 104){ //8
+        } else if (evt.which === 56 || evt.which === 104){ //8
             stateObj.digit(8);
-        } else if (evt.keyCode === 57 || evt.keyCode === 105){ //9
+        } else if (evt.which === 57 || evt.which === 105){ //9
             stateObj.digit(9);
-        } else if (evt.keyCode === 106){ //mult
+        } else if (evt.which === 106){ //mult
             stateObj.operation('×');
-        } else if (evt.keyCode === 107){ //add
+        } else if (evt.which === 107){ //add
             stateObj.operation('+');
-        } else if (evt.keyCode === 109){ //sub
+        } else if (evt.which === 109){ //sub
             stateObj.operation('-');
-        } else if (evt.keyCode === 111){ //div
+        } else if (evt.which === 111){ //div
             stateObj.operation('÷');
-        } else if (evt.keyCode === 110 || evt.keyCode === 190){ //decimal
+        } else if (evt.which === 110 || evt.which === 190){ //decimal
             stateObj.digit('.');
-        } else if (evt.keyCode === 27){ //esc
+        } else if (evt.which === 27){ //esc
             stateObj.reset();
         }
     };
