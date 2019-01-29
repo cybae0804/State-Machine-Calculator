@@ -1,6 +1,7 @@
 body {
     margin: 0;
 }
+
 .calculator {
     height: 60vh;
     padding: 0;
@@ -9,11 +10,13 @@ body {
     margin-left: 37.5%;
     border-radius: 10px;
 }
+
 .innerCalculator {
     height: 100%;
     width: 100%;
     padding: 2.5%;
 }
+
 .screen {
     background-color: black;
     height: 20%;
@@ -22,6 +25,7 @@ body {
     border: 13px solid #333D44;
     position: relative;
 }
+
 .screenText {
     font-size: 4rem;
     color: white;
@@ -31,37 +35,44 @@ body {
     top: 50%;
     transform: translateY(-50%);
 }
+
 .keysContainer {
     height: 80%;
     padding: 0;
 }
+
 .leftHand {
     background-color: #333D44;
     height: 100%;
     padding: 2.5%;
 }
+
 .rightHand {
     background-color: #333D44;
     height: 100%;
     padding: 3%;
 }
+
 #divide, #multiply, #sub {
     height: 17.6%;
     margin-bottom: 14.5%;
     background-color: #75002C;
     padding: 0;
 }
+
 #add {
     height: 39%;
     background-color: #75002C;
     padding: 0;
 }
+
 .row {
     height: 18.2%;
     margin-left: 0%;
     margin-bottom: 3%;
     padding-right: 4%;
 }
+
 .rightHand button, .leftHand button {
     box-sizing: border-box;
     border: 3px solid #333D44;
@@ -71,13 +82,49 @@ body {
     font-size: 3.5rem;
     font-weight: bold;
 }
+
 .rightHand button {
     color: white;
 }
+
 .whiteBtn {
     height: 100%;
     padding: 0;
 }
+
+.selfTest {
+    margin-top: 2rem;
+    background-color: #333;
+    height: 20vh;
+    border-radius: 10px;
+}
+
+.selfTestButtonContainer {
+    display: flex;
+    justify-content: center;
+    height: 20vh;
+}
+
+.selfTestButton {
+    height: 5vh;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.textContainer {
+    font-size: 2rem;
+    color: white;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+}
+
+.selected {
+    border: yellow 3px solid !important;
+}
+
 .clearBtn {
     background-color: #1E5A7E;
     height: 100%;
@@ -86,16 +133,19 @@ body {
     font-size: 4rem;
     font-weight: bold;
 }
+
 @media (max-width: 1200px) {
     .calculator {
         margin-left: 33.33%;
     }
 }
+
 @media (max-width: 991px) {
     .calculator {
         margin-left: 29.16%;
     }
 }
+
 @media (max-width: 767px) {
     .calculator {
         margin-left: 8.333333%;

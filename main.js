@@ -2,12 +2,14 @@ $(document).ready(init);
 
 function init() {
     $('button').click(handleClick);
+    $('.selfTestButton').click(selfTest);
     $('.screenText').text(0);
     initializeKeyPress();
 }
 
-function handleClick() {
-    let input = $(this).text().trim();
+function handleClick(e, simulatedInput = false) {
+    let input = simulatedInput === false ? $(this).text().trim() : simulatedInput;
+
     if ((!isNaN(input)) || input === '.'){
         stateObj.digit(input);
     } else if (input === '+' || input === '-' || input === '÷' || input === '×'){
@@ -18,6 +20,145 @@ function handleClick() {
         stateObj.reset();
     } else if (input === 'CE'){
         stateObj.clearEntry();
+    }
+}
+
+function selfTest() {
+    const testArray = [
+        {
+            input: '1+2=',
+            output: '3',
+            name: 'Addition'
+        },
+        {
+            input: '1×2=',
+            output: '2',
+            name: 'Multiplication'
+        },
+        {
+            input: '1÷2=',
+            output: '0.5',
+            name: 'Division'
+        },
+        {
+            input: '1-2=',
+            output: '-1',
+            name: 'Subtraction'
+        },
+        {
+            input: '1+1+2=',
+            output: '4',
+            name: 'Successive Operation'
+        },
+        {
+            input: '1.1+1.1=',
+            output: '2.2',
+            name: 'Decimals'
+        },
+        {
+            input: '3...3+4...4=',
+            output: '7.7',
+            name: 'Multiple Decimals'
+        },
+        {
+            input: '1++++2=',
+            output: '3',
+            name: 'Multiple Operation'
+        },
+        {
+            input: '1+-×2=',
+            output: '2',
+            name: 'Changing Operation'
+        },
+        {
+            input: '1+1===',
+            output: '4',
+            name: 'Operation Repeat'
+        },
+        {
+            input: '1+1+=+=',
+            output: '8',
+            name: 'Operation Rollover'
+        },
+        {
+            input: '1+3÷4+10×2=',
+            output: '22',
+            name: 'Successive Multi Operation'
+        },
+        {
+            input: '1÷0=',
+            output: 'error',
+            name: 'Division by Zero'
+        },
+        {
+            input: '++++1×3=',
+            output: '3',
+            name: 'Premature Operation'
+        },
+        {
+            input: '3×=',
+            output: '9',
+            name: 'Partial Operand'
+        },
+        {
+            input: '3=',
+            output: '3',
+            name: 'Missiong Operation'
+        },
+        {
+            input: '====',
+            output: '0',
+            name: 'Missing Operands'
+        },
+    ];
+
+    const keyMap = {
+        0: 'num0',
+        1: 'num1',
+        2: 'num2',
+        3: 'num3',
+        4: 'num4',
+        5: 'num5',
+        6: 'num6',
+        7: 'num7',
+        8: 'num8',
+        9: 'num9',
+        '+': 'add',
+        '-': 'sub',
+        '×': 'multiply',
+        '÷': 'divide',
+        '=': 'equals',
+        '.': 'decimal'
+    };
+
+    $('.selfTestButtonContainer').css('display', 'none');
+
+    let time = 0;
+    for (let i = 0; i < testArray.length; i++){
+        for (let j = 0; j <= testArray[i].input.length; j++){
+            time += 500;
+            setTimeout(function(){
+                if (j === 0) {
+                    stateObj.reset();
+                    $('.pass').text('');
+                    $('.outputField').text(`Expected: ${testArray[i].output}`);
+                    $('.testName').text(testArray[i].name);
+                } 
+
+                if (j === testArray[i].input.length){
+                    $('.pass').text(`${stateObj.current} ${String.fromCodePoint(9989)}️`);
+                } else {
+                    $(`#${keyMap[testArray[i].input[j]]}`).addClass('selected');
+                    $('.testField').text(testArray[i].input);
+                    
+                    handleClick(null, testArray[i].input[j]);
+                    
+                    setTimeout(function(){
+                        $(`#${keyMap[testArray[i].input[j]]}`).removeClass('selected');
+                    }, 475);
+                }
+            }, time);
+        }
     }
 }
 
