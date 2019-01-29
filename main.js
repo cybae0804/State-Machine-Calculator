@@ -2,12 +2,15 @@ $(document).ready(init);
 
 function init() {
     $('button').click(handleClick);
+    $('.slow').click(function(){selfTest()});
+    $('.fast').click(function(){selfTest(50)});
     $('.screenText').text(0);
     initializeKeyPress();
 }
 
-function handleClick() {
-    let input = $(this).text().trim();
+function handleClick(e, simulatedInput = false) {
+    let input = simulatedInput === false ? $(this).text().trim() : simulatedInput;
+
     if ((!isNaN(input)) || input === '.'){
         stateObj.digit(input);
     } else if (input === '+' || input === '-' || input === '÷' || input === '×'){
@@ -201,4 +204,174 @@ function initializeKeyPress(){
             stateObj.reset();
         }
     };
+}
+
+function selfTest(speed = 500) {
+    const testArray = [
+        {
+            input: '1+2=',
+            output: '3',
+            name: 'Addition'
+        },
+        {
+            input: '1×2=',
+            output: '2',
+            name: 'Multiplication'
+        },
+        {
+            input: '1÷2=',
+            output: '0.5',
+            name: 'Division'
+        },
+        {
+            input: '1-2=',
+            output: '-1',
+            name: 'Subtraction'
+        },
+        {
+            input: '1+1+2=',
+            output: '4',
+            name: 'Successive Operation'
+        },
+        {
+            input: '1.1+1.1=',
+            output: '2.2',
+            name: 'Decimals'
+        },
+        {
+            input: '3...3+4...4=',
+            output: '7.7',
+            name: 'Multiple Decimals'
+        },
+        {
+            input: '1++++2=',
+            output: '3',
+            name: 'Multiple Operation'
+        },
+        {
+            input: '1+-×2=',
+            output: '2',
+            name: 'Changing Operation'
+        },
+        {
+            input: '1+1===',
+            output: '4',
+            name: 'Operation Repeat'
+        },
+        {
+            input: '1+1+=+=',
+            output: '8',
+            name: 'Operation Rollover'
+        },
+        {
+            input: '1+3÷4+10×2=',
+            output: '22',
+            name: 'Successive Multi Operation'
+        },
+        {
+            input: '1÷0=',
+            output: 'error',
+            name: 'Division by Zero'
+        },
+        {
+            input: '++++1×3=',
+            output: '3',
+            name: 'Premature Operation'
+        },
+        {
+            input: '3×=',
+            output: '9',
+            name: 'Partial Operand'
+        },
+        {
+            input: '3=',
+            output: '3',
+            name: 'Missiong Operation'
+        },
+        {
+            input: '====',
+            output: '0',
+            name: 'Missing Operands'
+        },
+    ];
+
+    const keyMap = {
+        0: 'num0',
+        1: 'num1',
+        2: 'num2',
+        3: 'num3',
+        4: 'num4',
+        5: 'num5',
+        6: 'num6',
+        7: 'num7',
+        8: 'num8',
+        9: 'num9',
+        '+': 'add',
+        '-': 'sub',
+        '×': 'multiply',
+        '÷': 'divide',
+        '=': 'equals',
+        '.': 'decimal'
+    };
+
+    $('.selfTestButtonContainer').css('display', 'none');
+
+    let i = 0;
+    let j = 0;
+    let failedCases = [];
+
+    let interval = setInterval( function(){
+        if ( i === testArray.length) {
+            // Test is done
+            clearInterval(interval);
+            let result = 'Finished';
+            if (!failedCases.length){
+                result += ' with no errors.'
+            } else {
+                result += ', failed on...';
+            }
+
+            $('.textContainer').text(result);
+            for (let i = 0; i < failedCases.length; i++){
+                $('.textContainer').append($('<div>').text(failedCases[i].name));
+            }
+        } else {
+            // new test case and resets the calculator and populates the fields.
+            if (j === 0) {
+                stateObj.reset();
+                $('.pass').text('');
+                $('.outputField').text(`Expected: ${testArray[i].output}`);
+                $('.testName').text(testArray[i].name);
+            } 
+
+            // reached the last input of current test case
+            if (j === testArray[i].input.length){
+                if (stateObj.current === testArray[i].output){
+                    // passed the test case
+                    $('.pass').text(`${stateObj.current} ${String.fromCodePoint(9989)}️`);
+                } else {
+                    // failed the test case
+                    $('.pass').text(`${stateObj.current} ${String.fromCodePoint(9990)}`);
+                    failedCases.push({...testArray[i], actual: stateObj.current});
+                }
+            } else {
+                // simulating input test character into the calculator
+                $('.testField').text(testArray[i].input);
+                $(`#${keyMap[testArray[i].input[j]]}`).addClass('selected');
+                handleClick(null, testArray[i].input[j]);
+                
+                setTimeout(function(){
+                    $(`.selected`).removeClass('selected');
+                }, speed - 10);
+            }
+
+            // increments the counter for test array and input string
+            if ( j < testArray[i].input.length){
+                j++;
+            } else {
+                j = 0;
+                i++;
+            }
+        }
+    }, speed);
 }
