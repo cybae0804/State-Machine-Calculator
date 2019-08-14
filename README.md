@@ -5,6 +5,7 @@ Simple calculator built using state transition logic.
 ## Hosted 
 
 [Here](https://cybae.me/calculator)
+![Preview](https://i.imgur.com/imuSFDN.png)
 
 ## Features
 
